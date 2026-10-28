@@ -1,0 +1,146 @@
+{
+  "blink-then-stay": {
+    "kinds": ["exclusions"],
+    "params": {
+      "blinks": {"type": "number", "default": 4},
+      "cycle": {"type": "number", "default": 0.3},
+      "blink-alpha": {"type": "number", "default": 0.08},
+      "settle": {"type": "number", "default": 0.3}
+    }
+  },
+  "present-from-start": {
+    "kinds": ["exclusions"],
+    "params": {}
+  },
+  "exclusion-stripes": {
+    "kinds": [],
+    "params": {
+      "spacing-px": {"type": "number", "default": 20},
+      "weight-px": {"type": "number", "default": 5},
+      "angle-deg": {"type": "number", "default": 45},
+      "outline-px": {"type": "number", "default": 2.5}
+    }
+  },
+  "outside-playfield": {
+    "kinds": [],
+    "params": {
+      "spacing-px": {"type": "number", "default": 20},
+      "weight-px": {"type": "number", "default": 5},
+      "angle-deg": {"type": "number", "default": 45}
+    }
+  },
+  "waypoint-glide": {
+    "kinds": ["camera"],
+    "params": {
+      "easing": {
+        "type": "enum",
+        "default": "smoothstep",
+        "values": ["smoothstep", "linear", "ease-in", "ease-out"]
+      },
+      "path": {
+        "type": "enum",
+        "default": "segment",
+        "values": ["segment", "spline"]
+      }
+    }
+  },
+  "pin-glide": {
+    "kinds": ["seekers", "hider"],
+    "params": {
+      "easing": {
+        "type": "enum",
+        "default": "smoothstep",
+        "values": ["smoothstep", "linear", "ease-in", "ease-out"]
+      },
+      "from-progress": {"type": "number", "min": 0, "max": 1},
+      "to-progress": {"type": "number", "min": 0, "max": 1}
+    }
+  },
+  "pin-fade": {
+    "kinds": ["seekers", "hider"],
+    "params": {
+      "fade-in": {"type": "number", "default": 0.6},
+      "fade-out": {"type": "number", "default": 0.6}
+    }
+  },
+  "ride-highlight": {
+    "kinds": ["rides"],
+    "params": {
+      "dash-px": {"type": "number", "default": 14},
+      "gap-px": {"type": "number", "default": 14},
+      "outline-px": {"type": "number", "default": 2},
+      "flow-px-per-s": {"type": "number", "default": 30},
+      "fade-in": {"type": "number", "default": 0.3},
+      "fade-out": {"type": "number", "default": 0.3}
+    }
+  },
+  "label-fade": {
+    "kinds": ["labels"],
+    "params": {
+      "fade-in": {"type": "number", "default": 0.6},
+      "fade-out": {"type": "number", "default": 0.6}
+    }
+  },
+  "dot-grow": {
+    "kinds": ["labels"],
+    "params": {
+      "grow-in": {"type": "number", "default": 1.5}
+    }
+  },
+  "dot-pulse": {
+    "kinds": ["labels"],
+    "params": {
+      "pulse-in": {"type": "number", "default": 0.4},
+      "pulse-hold": {"type": "number", "default": 0.15},
+      "pulse-out": {"type": "number", "default": 0.6}
+    }
+  },
+  "line-fade": {
+    "kinds": ["lineEntrances"],
+    "params": {
+      "fade-in": {"type": "number", "default": 0.6},
+      "fade-out": {"type": "number", "default": 0.6}
+    }
+  },
+  "point-fade": {
+    "kinds": ["points"],
+    "params": {
+      "fade-in": {"type": "number", "default": 0.6},
+      "fade-out": {"type": "number", "default": 0.6}
+    }
+  },
+  "segment-draw": {
+    "kinds": ["segments"],
+    "params": {
+      "draw-in": {"type": "number", "default": 0.8},
+      "draw-out": {"type": "number", "default": 0.8},
+      "fade-in": {"type": "number", "default": 0.3},
+      "fade-out": {"type": "number", "default": 0.3}
+    }
+  },
+  "circle-draw": {
+    "kinds": ["circles"],
+    "params": {
+      "draw-in": {"type": "number", "default": 1.2},
+      "draw-out": {"type": "number", "default": 0.8},
+      "fade-in": {"type": "number", "default": 0.3},
+      "fade-out": {"type": "number", "default": 0.3}
+    }
+  },
+  "path-highlight": {
+    "kinds": ["paths"],
+    "params": {
+      "dash-px": {"type": "number", "default": 14},
+      "gap-px": {"type": "number", "default": 14},
+      "width-px": {"type": "number", "default": 8, "min": 1, "max": 20},
+      "opacity": {"type": "number", "default": 1, "min": 0, "max": 1},
+      "base": {"type": "boolean", "default": true},
+      "outline-px": {"type": "number", "default": 2},
+      "flow-px-per-s": {"type": "number", "default": 30},
+      "draw-in": {"type": "number", "default": 0},
+      "draw-out": {"type": "number", "default": 0},
+      "fade-in": {"type": "number", "default": 0.3},
+      "fade-out": {"type": "number", "default": 0.3}
+    }
+  }
+}

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Create scene"
+  short_description: "Author, validate, render, and review a map scene"
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,54 @@
+{
+  "scene": {
+    "video": "demo",
+    "nn": 2,
+    "title": "Half Strip",
+    "length": "00:04:00",
+    "framing": "half"
+  },
+  "slideWindow": ["00:00:00", "00:03:00"],
+  "streets": true,
+  "camera": {
+    "waypoints": [
+      { "at": "00:00:00", "center": [13.412000, 52.520000], "zoom": 13.8 },
+      { "at": "00:04:00", "center": [13.412000, 52.520000], "zoom": 14.2 }
+    ]
+  },
+  "exclusions": [
+    {
+      "id": "demo-half-block",
+      "shape": {
+        "type": "Polygon",
+        "coordinates": [[
+          [13.400000, 52.516000],
+          [13.410000, 52.516000],
+          [13.410000, 52.524000],
+          [13.400000, 52.524000],
+          [13.400000, 52.516000]
+        ]]
+      },
+      "entry": { "recipe": "present-from-start" }
+    }
+  ],
+  "circles": [
+    {
+      "center": [13.420000, 52.518000],
+      "radius-m": 500,
+      "window": ["00:00:00", "00:04:00"],
+      "overrides": { "draw-in": 1, "draw-out": 0, "fade-out": 0 }
+    }
+  ],
+  "points": [
+    {
+      "coord": [13.418000, 52.522000],
+      "text": "Finish",
+      "window": ["00:00:00", "00:04:00"],
+      "overrides": { "fade-in": 0, "fade-out": 0 }
+    }
+  ],
+  "seekers": {
+    "photo": "assets/images/placeholder-seeker.svg",
+    "start": { "coord": [13.412000, 52.520000] },
+    "moves": []
+  }
+}

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- Historical comments reference scene names from the production project this
+     kit was extracted from. They document why a look token exists. -->
+<meta charset="utf-8">
+<title>Map Animations Kit — render</title>
+<link href="/node_modules/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; background: transparent; overflow: hidden; }
+  #map { position: absolute; top: 0; left: 0; }
+  #stripes { position: absolute; top: 0; left: 0; }
+  #stage, #slide-wrap { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+  #map.standalone { z-index: 0; }
+  #stage { z-index: 2; }
+
+  /* ---- half-framing divider: drawn on the stripe canvas (page.js) ----
+     (round 7: 6px DOM bar #623CEA; round 8: purple #54426B, 10px;
+      round 12: moved to the stripe canvas — a DOM bar above the WebGL map
+      misaligned the map's composited layer in headless screenshots) */
+
+  /* ---- pins: photo circle + tangent spike (prototype round-7 geometry) ----
+     verdict round 5 (ticket 06, Ben): pin 100 → 130px (spike + label offsets
+     scale with the circle; round-7 table says 100px — divergence recorded)
+     verdict round 15 (ticket 06, Ben): 130 → 150px (scale ×1.5 on the
+     round-7 base); spike wrap + label offsets scale proportionally
+     verdict round 84 (ticket 06, Ben): 150 → 170px ("a bit larger",
+     ben-intro-02 feedback); spike wrap + label offsets scaled ×17/15 */
+  .pin { z-index: 5; pointer-events: none; width: 170px; height: 233px; }
+  /* v1.16 per-pin scene tilt (oskar-22): rotate the whole pin about the spike
+     tip (bottom center = the MapLibre 'bottom' anchor), so the tilt never
+     moves the station the pin points at. Scene field `tilt` degrees,
+     clockwise-positive (CSS convention); 0 = frozen look. */
+  .pin-inner {
+    position: absolute; inset: 0;
+    transform-origin: 50% 100%;
+    transform: rotate(var(--pin-tilt, 0deg));
+  }
+  .pin-photo {
+    position: absolute; top: 0; left: 0; box-sizing: border-box;
+    width: 170px; height: 170px; border-radius: 50%;
+    background: var(--pin-color) var(--pin-photo) center/cover no-repeat;
+    border: 6px solid var(--pin-color);
+    box-shadow: 0 4px 14px rgba(36, 24, 54, 0.35);
+    z-index: 1;
+  }
+  .pin-spike-wrap {
+    position: absolute; top: 120px; left: 0;
+    width: 170px; height: 113px;
+    filter: drop-shadow(0 3px 3px rgba(36, 24, 54, 0.3));
+    z-index: 0;
+  }
+  .pin-spike {
+    width: 100%; height: 100%;
+    background: var(--pin-color);
+    clip-path: polygon(7.7% 0, 92.3% 0, 50% 100%);
+  }
+  .pin-label {
+    position: absolute; z-index: 2;
+    top: 163px; left: 50%; transform: translateX(-50%);
+    /* verdict round 2 (ticket 06, Ben): label 15px → 18px, same pill
+       verdict round 5 (ticket 06, Ben): pill text 18px → 22px, padding 3px 10px → 4px 12px
+       verdict round 15 (ticket 06, Ben): pill text 22px → 26px with the bigger pin */
+    font: 700 26px/1.1 system-ui, sans-serif; color: #E7DFC6;
+    background: var(--pin-color); padding: 5px 14px; border-radius: 999px;
+    box-shadow: 0 2px 6px rgba(36, 24, 54, 0.3);
+    white-space: nowrap;
+  }
+
+  /* ---- station label: dot + plain text (round-3 vocabulary) ----
+     verdict round 5 (ticket 06, Ben): dot 16 → 20px, ring 3 → 4px;
+     name 18px → 24px
+     verdict round 85 (ticket 06, Ben): name 24 → 27px (×17/15, same ratio
+     as the round-84 pin bump; ben-intro-02 feedback "a bit bigger") */
+  .station-dot { position: absolute; z-index: 4; pointer-events: none; }
+  .station-dot-inner {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: #FFFFFF; border: 4px solid var(--station-color, #224F86);
+    /* v1.4 dot-grow (leander-14): scale rides on the inner dot via
+       --dot-scale (set per-frame by page.js); 1 = round-5 frozen size.
+       v1.11 dot-scale (leander-intro-01, all-stations wall): --dot-base is
+       the scene-authored base-size multiplier; final scale = base × motion */
+    transform: scale(calc(var(--dot-base, 1) * var(--dot-scale, 1)));
+    transform-origin: center;
+  }
+  .station-name {
+    z-index: 4; pointer-events: none;
+    font: 600 27px/1.2 system-ui, sans-serif; color: var(--station-color, #224F86);
+    /* v1.14 label-scale (oskar-01): scene-authored text-size multiplier via
+       --label-scale; default 1 = the frozen 27px token */
+    font-size: calc(27px * var(--label-scale, 1));
+    white-space: nowrap;
+    text-shadow: 0 0 4px #E5E4DE, 0 0 8px #E5E4DE, 0 0 12px #E5E4DE;
+  }
+
+  /* ---- free point: station-label look, black, slightly thinner (leander-07).
+     Round 24 verdict: pin renders ABOVE points (reverted the z-6 flip) ---- */
+  .point-dot-inner { width: 16px; height: 16px; border-width: 3px; }
+  .point-name {
+    font-weight: 600; font-size: 22px;
+    text-shadow: 0 0 4px #E5E4DE, 0 0 8px #E5E4DE, 0 0 10px #E5E4DE;
+    /* v1.19: scene text may carry explicit newlines (\n) — pre-line keeps
+       them and collapses runs of spaces; single-line points unchanged */
+    white-space: pre-line;
+  }
+  /* v1.9 per-point scale (leander-22 hospitals): scene-authored amplitude via
+     --pt-scale; default 1 = the frozen sizes above */
+  .point-dot-inner { transform: scale(var(--pt-scale, 1)); transform-origin: center; }
+  .point-name { font-size: calc(22px * var(--pt-scale, 1)); }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="stage"><canvas id="stripes"></canvas></div>
+
+<script src="/node_modules/maplibre-gl/dist/maplibre-gl.js"></script>
+<script src="/node_modules/pmtiles/dist/pmtiles.js"></script>
+<script src="/render/inject.js"></script>
+<script src="/render/interpreter.js"></script>
+<script src="/render/page/page.js"></script>
+</body>
+</html>

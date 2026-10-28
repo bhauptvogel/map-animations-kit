@@ -1,0 +1,130 @@
+{
+  "version": 8,
+  "name": "map-animations-kit",
+  "sources": {
+    "ofm": {
+      "type": "vector",
+      "url": "https://tiles.openfreemap.org/planet"
+    }
+  },
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "paint": { "background-color": "#DFE4E8" }
+    },
+
+    {
+      "id": "landcover-wood",
+      "type": "fill",
+      "source": "ofm",
+      "source-layer": "landcover",
+      "filter": ["==", ["get", "class"], "wood"],
+      "paint": { "fill-color": "#8EA1A0", "fill-opacity": 0.55 }
+    },
+    {
+      "id": "landcover-grass",
+      "type": "fill",
+      "source": "ofm",
+      "source-layer": "landcover",
+      "filter": ["==", ["get", "class"], "grass"],
+      "paint": { "fill-color": "#96A8A6", "fill-opacity": 0.42 }
+    },
+    {
+      "id": "landcover-farmland",
+      "type": "fill",
+      "source": "ofm",
+      "source-layer": "landcover",
+      "filter": ["==", ["get", "class"], "farmland"],
+      "paint": { "fill-color": "#A2AFAC", "fill-opacity": 0.25 }
+    },
+    {
+      "id": "park",
+      "type": "fill",
+      "source": "ofm",
+      "source-layer": "park",
+      "paint": { "fill-color": "#8A9D9A", "fill-opacity": 0.45 }
+    },
+
+    {
+      "id": "water",
+      "type": "fill",
+      "source": "ofm",
+      "source-layer": "water",
+      "paint": { "fill-color": "#C7DCEA" }
+    },
+    {
+      "id": "waterway",
+      "type": "line",
+      "source": "ofm",
+      "source-layer": "waterway",
+      "paint": { "line-color": "#C7DCEA", "line-width": 1.4 }
+    },
+
+    {
+      "id": "building",
+      "type": "fill",
+      "source": "ofm",
+      "source-layer": "building",
+      "paint": { "fill-color": "#3E4754", "fill-opacity": 0.1 }
+    },
+
+    {
+      "id": "road-motorway",
+      "type": "line",
+      "source": "ofm",
+      "source-layer": "transportation",
+      "filter": ["in", ["get", "class"], ["literal", ["motorway", "trunk"]]],
+      "paint": { "line-color": "rgba(62, 66, 78, 0.24)", "line-width": 1.5 }
+    },
+    {
+      "id": "road-primary",
+      "type": "line",
+      "source": "ofm",
+      "source-layer": "transportation",
+      "filter": ["in", ["get", "class"], ["literal", ["primary", "secondary"]]],
+      "paint": { "line-color": "rgba(62, 66, 78, 0.17)", "line-width": 0.9 }
+    },
+    {
+      "id": "road-tertiary-minor",
+      "type": "line",
+      "source": "ofm",
+      "source-layer": "transportation",
+      "filter": ["in", ["get", "class"], ["literal", ["tertiary", "minor"]]],
+      "minzoom": 14,
+      "layout": { "visibility": "none" },
+      "paint": { "line-color": "rgba(62, 66, 78, 0.62)", "line-width": 1.6 }
+    },
+    {
+      "id": "road-service",
+      "type": "line",
+      "source": "ofm",
+      "source-layer": "transportation",
+      "filter": ["==", ["get", "class"], "service"],
+      "minzoom": 14,
+      "layout": { "visibility": "none" },
+      "paint": { "line-color": "rgba(62, 66, 78, 0.52)", "line-width": 1.25 }
+    },
+    {
+      "id": "road-path",
+      "type": "line",
+      "source": "ofm",
+      "source-layer": "transportation",
+      "filter": ["all",
+        ["in", ["get", "class"], ["literal", ["path", "track"]]],
+        ["==", ["geometry-type"], "LineString"]
+      ],
+      "minzoom": 14,
+      "layout": { "visibility": "none" },
+      "paint": { "line-color": "rgba(62, 66, 78, 0.55)", "line-width": 1.15 }
+    },
+    {
+      "id": "rail",
+      "type": "line",
+      "source": "ofm",
+      "source-layer": "transportation",
+      "filter": ["==", ["get", "class"], "rail"],
+      "paint": { "line-color": "rgba(62, 66, 78, 0.14)", "line-width": 0.8 }
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+node_modules/
+renders/
+frames-work/
+data/tmp/
+data/tiles/*.pmtiles
+data/sources/
+.DS_Store
+*.log
+.opencode/node_modules/
+test-output/

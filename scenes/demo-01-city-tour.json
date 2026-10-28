@@ -1,0 +1,91 @@
+{
+  "scene": {
+    "video": "demo",
+    "nn": 1,
+    "title": "City Tour",
+    "length": "00:06:00",
+    "framing": "full"
+  },
+  "streets": true,
+  "camera": {
+    "waypoints": [
+      { "at": "00:00:00", "center": [13.407000, 52.518000], "zoom": 13.4 },
+      { "at": "00:06:00", "center": [13.412000, 52.520000], "zoom": 14.2 }
+    ],
+    "overrides": { "path": "spline" }
+  },
+  "exclusions": [
+    {
+      "id": "demo-block",
+      "shape": {
+        "type": "Polygon",
+        "coordinates": [[
+          [13.392000, 52.522000],
+          [13.405000, 52.522000],
+          [13.405000, 52.532000],
+          [13.392000, 52.532000],
+          [13.392000, 52.522000]
+        ]]
+      },
+      "entry": { "recipe": "blink-then-stay", "window": ["00:02:00", "00:04:00"] }
+    }
+  ],
+  "circles": [
+    {
+      "center": [13.420000, 52.518000],
+      "radius-m": 700,
+      "window": ["00:00:00", "00:04:00"],
+      "overrides": { "draw-out": 0, "fade-out": 0.5 }
+    }
+  ],
+  "segments": [
+    {
+      "coords": [[13.398000, 52.512000], [13.428000, 52.530000]],
+      "window": ["00:01:00", "00:05:00"],
+      "overrides": { "draw-in": 0.8, "draw-out": 0.8 }
+    }
+  ],
+  "paths": [
+    {
+      "coords": [
+        [13.402000, 52.516000],
+        [13.407000, 52.518000],
+        [13.412000, 52.520000],
+        [13.418000, 52.522000]
+      ],
+      "window": ["00:00:00", "00:06:00"],
+      "overrides": { "draw-in": 2, "draw-out": 0, "fade-in": 0, "fade-out": 0 }
+    }
+  ],
+  "points": [
+    {
+      "coord": [13.402000, 52.516000],
+      "text": "Start",
+      "window": ["00:00:12", "00:05:12"],
+      "overrides": { "fade-out": 0.5 }
+    },
+    {
+      "coord": [13.418000, 52.522000],
+      "text": "Finish",
+      "window": ["00:01:00", "00:06:00"],
+      "overrides": { "fade-out": 0.5 }
+    }
+  ],
+  "seekers": {
+    "photo": "assets/images/placeholder-seeker.svg",
+    "start": { "coord": [13.402000, 52.516000] },
+    "moves": [
+      {
+        "from-coord": [13.402000, 52.516000],
+        "to-coord": [13.412000, 52.520000],
+        "window": ["00:02:00", "00:05:00"]
+      }
+    ]
+  },
+  "hider": {
+    "photo": "assets/images/placeholder-hider.svg",
+    "start": { "coord": [13.418000, 52.522000] },
+    "moves": [],
+    "tilt": -5
+  }
+}
